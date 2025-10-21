@@ -18,7 +18,7 @@ public class App {
         List<Account> kids = new ArrayList<>();
         List<Account> invests = new ArrayList<>();
 
-        System.out.println("°❀⋆ Welcome to Kaspi Bank ❀⋆");
+        System.out.println("°❀⋆ Welcome to Bank ❀⋆");
         System.out.println("Register");
         System.out.print("Login: ");
         String login = sc.nextLine();
