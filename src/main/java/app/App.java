@@ -17,23 +17,6 @@ public class App {
         List<Account> invests = new ArrayList<>();
 
         System.out.println("°❀⋆ Welcome to Bank ❀⋆");
-<<<<<<< HEAD
-        System.out.println("Register");
-        System.out.print("Login: ");
-        String login = sc.nextLine();
-        System.out.print("Password: ");
-        String pass = sc.nextLine();
-        user.addUser(login, pass);
-
-        System.out.println("Sign in your profile");
-        System.out.print("Login: ");
-        String login1 = sc.nextLine();
-        System.out.print("Password: ");
-        String pass2 = sc.nextLine();
-        user.signIn(login1, pass2);
-
-=======
->>>>>>> 8faa162 (changed)
         boolean menuVisible = true;
         printMenu();
 
