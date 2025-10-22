@@ -5,11 +5,11 @@ import base.*;
 
 public class BankFactory implements AccountFactory {
     @Override
-    public Account createKaspiGold() {
+    public Account createBaseAccount() {
         return new BaseAccount();
     }
     @Override
-    public Account createKaspiGildKids() {
+    public Account createBaseAccountKids() {
         return new BaseAccount();
     }
     @Override
@@ -17,7 +17,7 @@ public class BankFactory implements AccountFactory {
         return new Deposit();
     }
     @Override
-    public Account createKaspiInvestment() {
+    public Account createInvestmentAccount() {
         return new InvestmentAccount();
     }
 }
