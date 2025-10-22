@@ -2,7 +2,6 @@ package app;
 
 import base.Account;
 import facade.BankFacade;
-import user.User;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -11,14 +10,14 @@ public class App {
     public void RunApp() {
         BankFacade app = new BankFacade();
         Scanner sc = new Scanner(System.in);
-        User user = new User();
 
-        List<Account> golds = new ArrayList<>();
+        List<Account> base = new ArrayList<>();
         List<Account> deposits = new ArrayList<>();
         List<Account> kids = new ArrayList<>();
         List<Account> invests = new ArrayList<>();
 
         System.out.println("°❀⋆ Welcome to Bank ❀⋆");
+<<<<<<< HEAD
         System.out.println("Register");
         System.out.print("Login: ");
         String login = sc.nextLine();
@@ -33,6 +32,8 @@ public class App {
         String pass2 = sc.nextLine();
         user.signIn(login1, pass2);
 
+=======
+>>>>>>> 8faa162 (changed)
         boolean menuVisible = true;
         printMenu();
 
@@ -43,7 +44,7 @@ public class App {
             String choice = sc.nextLine().trim().toLowerCase();
 
             try {
-                if ("m".equals(choice) || "menu".equals(choice) || "h".equals(choice) || "help".equals(choice)) {
+                if ("m".equals(choice)) {
                     printMenu();
                     menuVisible = true;
                     continue;
@@ -52,8 +53,8 @@ public class App {
                 switch (choice) {
                     case "1": {
                         Account a = app.openBaseAccount();
-                        golds.add(a);
-                        System.out.println("Opened Base account #" + indexOfLast(golds));
+                        base.add(a);
+                        System.out.println("Opened Base account #" + indexOfLast(base));
                         break;
                     }
                     case "2": {
@@ -75,8 +76,8 @@ public class App {
                         break;
                     }
                     case "5": {
-                        ensureNotEmpty(golds, "Open at least one base account first");
-                        Account a = chooseFromList(sc, golds, "base");
+                        ensureNotEmpty(base, "Open at least one base account first");
+                        Account a = chooseFromList(sc, base, "base");
                         app.depositTo(a, readDouble(sc));
                         break;
                     }
@@ -99,8 +100,8 @@ public class App {
                         break;
                     }
                     case "9": {
-                        ensureNotEmpty(golds, "Open at least one base account first");
-                        Account a = chooseFromList(sc, golds, "base");
+                        ensureNotEmpty(base, "Open at least one base account first");
+                        Account a = chooseFromList(sc, base, "base");
                         app.withdrawal(a, readDouble(sc));
                         break;
                     }
@@ -123,12 +124,12 @@ public class App {
                         break;
                     }
                     case "13": {
-                        doTransfer(sc, app, golds, deposits, kids, invests);
+                        doTransfer(sc, app, base, deposits, kids, invests);
                         break;
                     }
                     case "14": {
-                        ensureNotEmpty(golds, "Open at least one base account first");
-                        Account a = chooseFromList(sc, golds, "base");
+                        ensureNotEmpty(base, "Open at least one base account first");
+                        Account a = chooseFromList(sc, base, "base");
                         System.out.print("Utility (e.g., electricity/water/internet): ");
                         String util = sc.nextLine().trim();
                         double amt = readDouble(sc);
@@ -137,11 +138,11 @@ public class App {
                     }
                     case "15": {
                         System.out.println("\n=== BALANCES ===");
-                        printBalances("Base", golds, app);
+                        printBalances("Base", base, app);
                         printBalances("Deposit", deposits, app);
                         printBalances("Kids", kids, app);
                         printBalances("Investment", invests, app);
-                        if (golds.isEmpty() && deposits.isEmpty() && kids.isEmpty() && invests.isEmpty())
+                        if (base.isEmpty() && deposits.isEmpty() && kids.isEmpty() && invests.isEmpty())
                             System.out.println("No accounts.");
                         break;
                     }
@@ -149,7 +150,7 @@ public class App {
                         System.out.println("Close which type? 1) Base  2) Deposit  3) Kids  4) Investment  0) Cancel");
                         String t = sc.nextLine().trim();
                         switch (t) {
-                            case "1": closeOne(sc, app, golds, "base"); break;
+                            case "1": closeOne(sc, app, base, "base"); break;
                             case "2": closeOne(sc, app, deposits, "deposit"); break;
                             case "3": closeOne(sc, app, kids, "kids"); break;
                             case "4": closeOne(sc, app, invests, "investment"); break;
@@ -178,15 +179,15 @@ public class App {
         System.out.println("2) Open Deposit");
         System.out.println("3) Open card for Kids");
         System.out.println("4) Open Investment");
-        System.out.println("5) Deposit to base account");
+        System.out.println("5) Add money to base account");
         System.out.println("6) Add money to deposit");
-        System.out.println("7) Deposit to kids account");
-        System.out.println("8) Deposit to invest account (invest)");
+        System.out.println("7) Add money to kids account");
+        System.out.println("8) Add money to invest account");
         System.out.println("9) Withdraw from base card");
         System.out.println("10) Withdraw from deposit card");
         System.out.println("11) Withdraw from kids card");
         System.out.println("12) Withdraw from invest card");
-        System.out.println("13) Transfer between my accounts (any → any)");
+        System.out.println("13) Transfer money between accounts");
         System.out.println("14) Pay utility from base card");
         System.out.println("15) Show balances");
         System.out.println("16) Close account");

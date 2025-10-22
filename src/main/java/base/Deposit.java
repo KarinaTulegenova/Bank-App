@@ -31,8 +31,7 @@ public class Deposit implements Account {
 
         balance -= amount;
 
-        System.out.println("Transferred " + amount + " KZT from Deposit to "
-                + toAccount.getClass().getSimpleName() + ".");
+        System.out.println("Transferred " + amount + " from Deposit");
         toAccount.addMoney(amount);
 
     }

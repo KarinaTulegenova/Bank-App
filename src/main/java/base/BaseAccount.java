@@ -6,7 +6,7 @@ public class BaseAccount implements Account {
     @Override
     public void addMoney(double amount) {
         balance += amount;
-        System.out.println("Deposited " + amount + " to KaspiGold. Balance = " + balance);
+        System.out.println("Deposited " + amount + " to Base account. Balance = " + balance);
     }
 
     @Override
@@ -14,7 +14,7 @@ public class BaseAccount implements Account {
         if (amount <= 0) { System.out.println("Amount must be > 0"); return; }
         if (balance >= amount) {
             balance -= amount;
-            System.out.println("Withdrew " + amount + " from KaspiGold. Balance = " + balance);
+            System.out.println("Withdrew " + amount + " from Base account. Balance = " + balance);
         } else {
             System.out.println("Insufficient funds. Balance = " + balance);
         }
@@ -36,13 +36,13 @@ public class BaseAccount implements Account {
         }
 
         balance -= amount;
-        System.out.println("Transferred " + amount + " KZT from KaspiGold.");
+        System.out.println("Transferred " + amount + "from Base account.");
         toAccount.addMoney(amount);
     }
 
     @Override
     public void closeAccount() {
-        System.out.println("KaspiGold closed. Final balance: " + balance);
+        System.out.println("Base account closed. Final balance: " + balance);
         balance = 0;
     }
 
@@ -54,6 +54,6 @@ public class BaseAccount implements Account {
 
     @Override
     public void invest(double amount) {
-        System.out.println("Investment amount is not allowed for Kaspi Gold. Close account.");
+        System.out.println("Investment is not allowed for Base account.");
     }
 }
