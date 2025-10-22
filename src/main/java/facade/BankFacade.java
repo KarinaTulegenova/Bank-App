@@ -25,30 +25,30 @@ public class BankFacade implements Facade {
     @Override
     public Account openBaseAccount() {
         Account acc = new CardBuilder()
-                .base(factory.createKaspiGold())
+                .base(factory.createBaseAccount())
                 .build();
-        announce("Congratulations! You opened a new Kaspi Gold card.");
+        announce("Congratulations! You opened a new card.");
         return acc;
     }
 
     @Override
     public Account openInvestmentAccount() {
         Account acc = new CardBuilder()
-                .base(factory.createKaspiInvestment())
+                .base(factory.createInvestmentAccount())
                 .taxOptimize(true)
                 .insurance(true)
                 .build();
-        announce("Congratulations! You opened a new Kaspi Investment card with benefits.");
+        announce("Congratulations! You opened a new Investment card with benefits.");
         return acc;
     }
 
     @Override
     public Account openKidsAccount() {
         Account acc = new CardBuilder()
-                .base(factory.createKaspiGildKids()) // или createKaspiGoldKids()
+                .base(factory.createBaseAccountKids()) 
                 .kids(true)
                 .build();
-        announce("Congratulations! You opened a new Kaspi Gold Kids card.");
+        announce("Congratulations! You opened a new Kids card.");
         return acc;
     }
 
