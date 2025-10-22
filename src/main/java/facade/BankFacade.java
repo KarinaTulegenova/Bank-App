@@ -1,12 +1,11 @@
 package facade;
 
 import base.Account;
-import factory.AccountFactory;
 import factory.BankFactory;
 import builder.CardBuilder;
 
 public class BankFacade implements Facade {
-    private final AccountFactory factory = new BankFactory();
+    private final BankFactory factory = new BankFactory();
 
     private void announce(String msg) {
         System.out.println("\n" + msg);

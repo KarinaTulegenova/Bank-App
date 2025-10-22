@@ -2,8 +2,8 @@ package app;
 
 import base.Account;
 import facade.BankFacade;
-import java.util.ArrayList;
-import java.util.List;
+import facade.Facade;
+
 import java.util.Scanner;
 
 public class App {
@@ -11,247 +11,202 @@ public class App {
         BankFacade app = new BankFacade();
         Scanner sc = new Scanner(System.in);
 
-        List<Account> base = new ArrayList<>();
-        List<Account> deposits = new ArrayList<>();
-        List<Account> kids = new ArrayList<>();
-        List<Account> invests = new ArrayList<>();
+        Account gold = null;
+        Account deposit = null;
+        Account kids = null;
+        Account invest = null;
 
-        System.out.println("°❀⋆ Welcome to Bank ❀⋆");
-        boolean menuVisible = true;
-        printMenu();
+        System.out.println("°❀⋆ Welcome to Kaspi Bank ❀⋆");
 
         while (true) {
-            if (!menuVisible) System.out.print("\nEnter choice (m = menu, 17 = exit): ");
-            else System.out.print("Choose: ");
+            System.out.println("\n=== MENU ===");
+            System.out.println("1) Open Base Account");
+            System.out.println("2) Open Deposit");
+            System.out.println("3) Open card for Kids");
+            System.out.println("4) Open Investment");
+            System.out.println("5) Deposit to base account");
+            System.out.println("6) Add money to deposit");
+            System.out.println("7) Deposit to kids account");
+            System.out.println("8) Deposit to invest account (invest)");
+            System.out.println("9) Withdraw from base card");
+            System.out.println("10) Withdraw from deposit card");
+            System.out.println("11) Withdraw from kids card");
+            System.out.println("12) Withdraw from invest card");
+            System.out.println("13) Transfer between my accounts (any → any)");
+            System.out.println("14) Pay utility from base card");
+            System.out.println("15) Show balances");
+            System.out.println("16) Close account");
+            System.out.println("17) Exit");
+            System.out.print("Choose: ");
 
-            String choice = sc.nextLine().trim().toLowerCase();
+            String choice = sc.nextLine().trim();
 
             try {
-                if ("m".equals(choice)) {
-                    printMenu();
-                    menuVisible = true;
-                    continue;
-                }
-
                 switch (choice) {
-                    case "1": {
-                        Account a = app.openBaseAccount();
-                        base.add(a);
-                        System.out.println("Opened Base account #" + indexOfLast(base));
+                    case "1":
+                        gold = app.openBaseAccount();
                         break;
-                    }
-                    case "2": {
-                        Account a = app.openDeposit();
-                        deposits.add(a);
-                        System.out.println("Opened Deposit #" + indexOfLast(deposits));
+                    case "2":
+                        deposit = app.openDeposit();
                         break;
-                    }
-                    case "3": {
-                        Account a = app.openKidsAccount();
-                        kids.add(a);
-                        System.out.println("Opened Kids card #" + indexOfLast(kids));
+                    case "3":
+                        kids = app.openKidsAccount();
                         break;
-                    }
-                    case "4": {
-                        Account a = app.openInvestmentAccount();
-                        invests.add(a);
-                        System.out.println("Opened Investment #" + indexOfLast(invests));
+                    case "4":
+                        invest = app.openInvestmentAccount();
                         break;
-                    }
-                    case "5": {
-                        ensureNotEmpty(base, "Open at least one base account first");
-                        Account a = chooseFromList(sc, base, "base");
-                        app.depositTo(a, readDouble(sc));
+
+                    case "5":
+                        ensure(gold, "Open base account first");
+                        app.depositTo(gold, readDouble(sc));
                         break;
-                    }
-                    case "6": {
-                        ensureNotEmpty(deposits, "Open at least one deposit first");
-                        Account a = chooseFromList(sc, deposits, "deposit");
-                        app.depositTo(a, readDouble(sc));
+                    case "6":
+                        ensure(deposit, "Open deposit first");
+                        app.depositTo(deposit, readDouble(sc));
                         break;
-                    }
-                    case "7": {
-                        ensureNotEmpty(kids, "Open at least one kids card first");
-                        Account a = chooseFromList(sc, kids, "kids");
-                        app.depositTo(a, readDouble(sc));
+                    case "7":
+                        ensure(kids, "Open kids card first");
+                        app.depositTo(kids, readDouble(sc));
                         break;
-                    }
-                    case "8": {
-                        ensureNotEmpty(invests, "Open at least one investment first");
-                        Account a = chooseFromList(sc, invests, "investment");
-                        app.investTo(a, readDouble(sc));
+                    case "8":
+                        ensure(invest, "Open investment first");
+                        app.investTo(invest, readDouble(sc));
                         break;
-                    }
-                    case "9": {
-                        ensureNotEmpty(base, "Open at least one base account first");
-                        Account a = chooseFromList(sc, base, "base");
-                        app.withdrawal(a, readDouble(sc));
+
+                    case "9":
+                        ensure(gold, "Open base account first");
+                        app.withdrawal(gold, readDouble(sc));
                         break;
-                    }
-                    case "10": {
-                        ensureNotEmpty(deposits, "Open at least one deposit first");
-                        Account a = chooseFromList(sc, deposits, "deposit");
-                        app.withdrawal(a, readDouble(sc));
+                    case "10":
+                        ensure(deposit, "Open deposit first");
+                        app.withdrawal(deposit, readDouble(sc));
                         break;
-                    }
-                    case "11": {
-                        ensureNotEmpty(kids, "Open at least one kids card first");
-                        Account a = chooseFromList(sc, kids, "kids");
-                        app.withdrawal(a, readDouble(sc));
+                    case "11":
+                        ensure(kids, "Open kids card first");
+                        app.withdrawal(kids, readDouble(sc));
                         break;
-                    }
-                    case "12": {
-                        ensureNotEmpty(invests, "Open at least one investment first");
-                        Account a = chooseFromList(sc, invests, "investment");
-                        app.withdrawal(a, readDouble(sc));
+                    case "12":
+                        ensure(invest, "Open investment first");
+                        app.withdrawal(invest, readDouble(sc));
                         break;
-                    }
-                    case "13": {
-                        doTransfer(sc, app, base, deposits, kids, invests);
+
+                    case "13":
+                        doTransfer(sc, app, gold, deposit, kids, invest);
                         break;
-                    }
+
                     case "14": {
-                        ensureNotEmpty(base, "Open at least one base account first");
-                        Account a = chooseFromList(sc, base, "base");
+                        ensure(gold, "Open base account first");
                         System.out.print("Utility (e.g., electricity/water/internet): ");
                         String util = sc.nextLine().trim();
                         double amt = readDouble(sc);
-                        app.payUtility(a, util, amt);
+                        app.payUtility(gold, util, amt);
                         break;
                     }
-                    case "15": {
+
+                    case "15":
                         System.out.println("\n=== BALANCES ===");
-                        printBalances("Base", base, app);
-                        printBalances("Deposit", deposits, app);
-                        printBalances("Kids", kids, app);
-                        printBalances("Investment", invests, app);
-                        if (base.isEmpty() && deposits.isEmpty() && kids.isEmpty() && invests.isEmpty())
+                        if (gold != null) { System.out.print("Base: "); app.viewCurrentBalance(gold); }
+                        if (deposit != null) { System.out.print("Deposit: "); app.viewCurrentBalance(deposit); }
+                        if (kids != null) { System.out.print("Kids: "); app.viewCurrentBalance(kids); }
+                        if (invest != null) { System.out.print("Investment: "); app.viewCurrentBalance(invest); }
+                        if (gold == null && deposit == null && kids == null && invest == null)
                             System.out.println("No accounts.");
                         break;
-                    }
+
                     case "16": {
-                        System.out.println("Close which type? 1) Base  2) Deposit  3) Kids  4) Investment  0) Cancel");
-                        String t = sc.nextLine().trim();
-                        switch (t) {
-                            case "1": closeOne(sc, app, base, "base"); break;
-                            case "2": closeOne(sc, app, deposits, "deposit"); break;
-                            case "3": closeOne(sc, app, kids, "kids"); break;
-                            case "4": closeOne(sc, app, invests, "investment"); break;
-                            case "0": System.out.println("Canceled."); break;
-                            default: System.out.println("Unknown option.");
+                        System.out.println("Close which account? 1) Base  2) Deposit  3) Kids  4) Investment  0) Cancel");
+                        String c = sc.nextLine().trim();
+                        switch (c) {
+                            case "1":
+                                ensure(gold, "Base not opened");
+                                app.closeAccount(gold);
+                                gold = null;
+                                System.out.println("Base account closed.");
+                                break;
+                            case "2":
+                                ensure(deposit, "Deposit not opened");
+                                app.closeAccount(deposit);
+                                deposit = null;
+                                System.out.println("Deposit closed.");
+                                break;
+                            case "3":
+                                ensure(kids, "Kids not opened");
+                                app.closeAccount(kids);
+                                kids = null;
+                                System.out.println("Kids card closed.");
+                                break;
+                            case "4":
+                                ensure(invest, "Investment not opened");
+                                app.closeAccount(invest);
+                                invest = null;
+                                System.out.println("Investment closed.");
+                                break;
+                            case "0":
+                                System.out.println("Canceled.");
+                                break;
+                            default:
+                                System.out.println("Unknown option.");
                         }
                         break;
                     }
+
                     case "17":
                         System.out.println("Bye!");
                         return;
+
                     default:
-                        System.out.println("Unknown option. Press 'm' to see menu.");
+                        System.out.println("Unknown option.");
                 }
-                menuVisible = false;
             } catch (Exception e) {
                 System.out.println("Error: " + e.getMessage());
-                menuVisible = false;
             }
         }
     }
 
-    private static void printMenu() {
-        System.out.println("\n=== MENU ===");
-        System.out.println("1) Open Base Account");
-        System.out.println("2) Open Deposit");
-        System.out.println("3) Open card for Kids");
-        System.out.println("4) Open Investment");
-        System.out.println("5) Add money to base account");
-        System.out.println("6) Add money to deposit");
-        System.out.println("7) Add money to kids account");
-        System.out.println("8) Add money to invest account");
-        System.out.println("9) Withdraw from base card");
-        System.out.println("10) Withdraw from deposit card");
-        System.out.println("11) Withdraw from kids card");
-        System.out.println("12) Withdraw from invest card");
-        System.out.println("13) Transfer money between accounts");
-        System.out.println("14) Pay utility from base card");
-        System.out.println("15) Show balances");
-        System.out.println("16) Close account");
-        System.out.println("17) Exit");
-        System.out.println("(press 'm' anytime to show this menu)");
+    private static void ensure(Account acc, String msg) {
+        if (acc == null) throw new IllegalStateException(msg);
     }
 
-    private static int indexOfLast(List<Account> list) { return list.size() - 1; }
-    private static void ensureNotEmpty(List<Account> list, String msg) {
-        if (list.isEmpty()) throw new IllegalStateException(msg);
-    }
     private static double readDouble(Scanner sc) {
         System.out.print("Amount: ");
         String s = sc.nextLine().trim().replace(',', '.');
         return Double.parseDouble(s);
     }
-    private static Account chooseFromList(Scanner sc, List<Account> list, String label) {
-        while (true) {
-            System.out.println("\nChoose " + label + " account:");
-            for (int i = 0; i < list.size(); i++) System.out.println(i + ") " + label + " #" + i);
-            System.out.print("Index: ");
-            String c = sc.nextLine().trim();
-            try {
-                int idx = Integer.parseInt(c);
-                if (idx >= 0 && idx < list.size()) return list.get(idx);
-            } catch (NumberFormatException ignored) {}
-            System.out.println("Invalid index, try again.");
-        }
-    }
-    private static void printBalances(String title, List<Account> list, BankFacade app) {
-        if (list.isEmpty()) return;
-        System.out.println(title + " accounts:");
-        for (int i = 0; i < list.size(); i++) {
-            double bal = app.viewCurrentBalance(list.get(i));
-            System.out.println("  #" + i + " -> " + bal);
-        }
-    }
-    private static void closeOne(Scanner sc, BankFacade app, List<Account> list, String label) {
-        ensureNotEmpty(list, "No " + label + " accounts opened");
-        Account a = chooseFromList(sc, list, label);
-        app.closeAccount(a);
-        int removedIdx = list.indexOf(a);
-        list.remove(a);
-        System.out.println(cap(label) + " account #" + removedIdx + " closed.");
-    }
-    private static String cap(String s) { return s.isEmpty() ? s : Character.toUpperCase(s.charAt(0)) + s.substring(1); }
 
-    private static void doTransfer(Scanner sc, BankFacade app,
-                                   List<Account> golds, List<Account> deposits,
-                                   List<Account> kids, List<Account> invests) {
-        List<Account> all = new ArrayList<>();
-        List<String> names = new ArrayList<>();
-        addLabeled(all, names, golds, "Base");
-        addLabeled(all, names, deposits, "Deposit");
-        addLabeled(all, names, kids, "Kids");
-        addLabeled(all, names, invests, "Investment");
-        if (all.isEmpty()) throw new IllegalStateException("You have no accounts to transfer.");
-
+    private static void doTransfer(Scanner sc, Facade app,
+                                   Account gold, Account deposit, Account kids, Account invest) {
         System.out.println("\nChoose FROM which account:");
-        int fromIdx = chooseAny(sc, names);
+        Account from = chooseAccount(sc, gold, deposit, kids, invest, "from");
+
         System.out.println("Choose TO which account:");
-        int toIdx = chooseAny(sc, names);
-        if (fromIdx == toIdx) throw new IllegalStateException("Source and destination must be different");
+        Account to = chooseAccount(sc, gold, deposit, kids, invest, "to");
+
+        if (from == to) throw new IllegalStateException("Source and destination must be different");
 
         double amt = readDouble(sc);
-        app.transfer(all.get(fromIdx), all.get(toIdx), amt);
+        app.transfer(from, to, amt);
         System.out.println("Transferred successfully.");
     }
-    private static void addLabeled(List<Account> all, List<String> names, List<Account> src, String label) {
-        for (int i = 0; i < src.size(); i++) { all.add(src.get(i)); names.add(label + " #" + i); }
-    }
-    private static int chooseAny(Scanner sc, List<String> names) {
+
+    private static Account chooseAccount(Scanner sc,
+                                         Account gold, Account deposit, Account kids, Account invest,
+                                         String role) {
         while (true) {
-            for (int i = 0; i < names.size(); i++) System.out.println(i + ") " + names.get(i));
-            System.out.print("Index: ");
+            System.out.println(
+                    "1) Base" + (gold == null ? " (not opened)" : "") + "   " +
+                            "2) Deposit" + (deposit == null ? " (not opened)" : "") + "   " +
+                            "3) Kids" + (kids == null ? " (not opened)" : "") + "   " +
+                            "4) Investment" + (invest == null ? " (not opened)" : "")
+            );
+            System.out.print("Choose account " + role + ": ");
             String c = sc.nextLine().trim();
-            try {
-                int idx = Integer.parseInt(c);
-                if (idx >= 0 && idx < names.size()) return idx;
-            } catch (NumberFormatException ignored) {}
-            System.out.println("Invalid index, try again.");
+            switch (c) {
+                case "1": ensure(gold, "Base not opened"); return gold;
+                case "2": ensure(deposit, "Deposit not opened"); return deposit;
+                case "3": ensure(kids, "Kids not opened"); return kids;
+                case "4": ensure(invest, "Investment not opened"); return invest;
+                default: System.out.println("Unknown option, try again.");
+            }
         }
     }
 }
